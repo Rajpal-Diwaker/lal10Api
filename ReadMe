@@ -1,0 +1,16 @@
+ 1. enquiries table [isGenrate] column should have values [0->not Assign,1->Assign open to all,2->Assign to particuler group]
+ 2. enquiries table [typeOfEnquiry] column should have values ['0->lead Enquiry,1->Email Enquiry,2->website Enquiry']
+ 3. 
+
+ SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+Note 
+return Promise.reject(e.UniqueViolationError? 'User already exists' : 'Some error while adding user')
+
+1. error handling on evrey api
+2. enquiries table mailMailBody column renam to mailBody
+3. enquiry Track Order mai date ke liye enquiries table mai ek column bdana hai
+4.
+5.
+
+

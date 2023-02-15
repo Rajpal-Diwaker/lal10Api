@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		img{margin-top: 5px; width:200px;}
+		p{font-style: normal;}
+		.headerview {
+			background-color: #f2f2f2;
+			text-align: left
+			}
+		body{font-size: 12px;}	
+	</style>
+<body>
+
+<div>
+	<table style="border:0px">
+		<td style="text-align: left">
+			<b>(Lal10) Bhagwandas Retail Pvt. Ltd.</b>
+		<p>
+			Corporate office:<br>
+			Bhagwandas Retail Pvt.Ltd.<br>
+			C 15, C Block, Sector 65<br>
+			Noida, UP - 201301<br>
+			Noida, Uttar Pradesh 201301<br>
+			IN<br>
+			9167106930<br>
+			maneet@lal10.com,sanchit@lal10.com<br>
+			GSTIN: 09AAGCB0517N1ZK<br>
+			PAN No. AAGCB0517N<br>
+			CIN: 07857139927<br>
+		</p>
+		</td>
+		<td>
+			<img src="https://res.cloudinary.com/techugonew/image/upload/v1596048332/2BtseqfXTubd1B-yzvuvp4K_.png"/>
+		</td>
+</table>
+
+<h1>Estimate</h1>
+<table>
+	<tr>
+		<th>ADDRESS</th>
+		<th>SHIP TO</th>
+		<th>ESTIMATE NO  -OE8011598 </th>
+	</tr>
+<tr>
+	<td>
+		House of Anita Dongre HOAD <br>Mumbai, Maharashtra 400701
+		India<br>State Code: 27
+		<br>
+		<b>PLACE OF SUPPLY</b><br>
+		27 - Maharashtra
+	</td>
+
+	<td>
+		House of Anita Dongre HOAD <br>Mumbai, Maharashtra 400701
+		India<br>State Code: 27		
+	</td>
+
+	<td>
+		DATE 07/08/2020	
+	</td>
+</tr>	
+</table>
+<hr>
+
+<br>
+<br>
+<table width="100%">
+	<tr class="headerview" >
+		<th>No</th><th>DATE</th><th>PRODUCT NAME</th><th>UNIT</th><th>QTY</th><th>RATE</th><th>AMOUNT</th>
+	</tr>	
+<tr>
+	<td> 1 </td>
+	<td>2020-08-29</td>
+	<td>ABCD</td>
+	<td>ABCD</td>
+	<td>ABCD</td>
+	<td>18</td>
+	<td>5000</td>	
+</tr>
+
+</table>
+
+<hr style="border-top: 1px solid #f2f2f2;">
+
+<table width="100%" style="margin-right:20px">
+	<tr><td>SUBTOTAL</td>  <td>5000</td></tr>
+	<tr><td>IGST @ 5% on 13000 </td>  <td> 650</td></tr>
+	<tr><td>TOTAL </td>  <td> INR 13650</td></tr>
+	<tr>
+		<th>Rupees Thirteen Thousand and Six Hundred Fifty Only</th>
+	</tr>
+
+</table>
+<br>
+
+<table width="100%">	
+	<th>Accepted By</th>
+	<th>Accepted Date</th>
+</table>
+<br>
+Authorized Signature
+<br>
+
+EnqID: <%= students.EqnId %>
+shipTo: <%= students.shipTo %>
+acceptedBy: <%= students.acceptedBy %>
+address: <%= students.address %>
+productName: <%= students.productName %>
+estimateRate: <%= students.estimateRate %>
+
+	<!-- <div style="text-align: center; padding-left: 50px;">			
+	<table style="text-allign : center">
+		<% if (students.length > 0) { %>
+			<% students.forEach(student => {%>
+				<tr><td><%= student.name %></td><td><%= student.email %></td><td><%= student.city %></td><td><%= student.country %></td></tr>
+		<%	});%>
+		<% }%>
+	</table>	 -->	
+	</div>
+</div>
+</body>
+</html>
+

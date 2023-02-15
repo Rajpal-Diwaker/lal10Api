@@ -1,0 +1,177 @@
+const cluster = require('cluster');
+const net = require('net');
+const os = require('os');
+const sio = require('socket.io');
+const sio_redis = require('socket.io-redis');
+const farmhash = require('farmhash');
+const redis = require('redis');
+//const fs = require("fs");
+const app = require('../lal10');
+//const tls = require('tls');
+
+global.cluster = require('cluster');
+
+const {
+    REDIS_DB,
+    REDIS_CLIENT,
+    IO_CONN
+} = require('../Utilities/constants');
+
+const { promisifyRedisClient } = require('../Utilities/redis');
+const { onWsConnectionHandler } = require('../Utilities/wsHandler')
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+const  normalizePort = val => {
+    const port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+};
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || '5578');
+const numProcesses = os.cpus().length;
+let runningProcesses = 0;
+if(cluster.isMaster) {
+    const workers = [];
+    const spawn = (i) => {
+        console.log('spawning worker', i);
+        workers[i] = cluster.fork();
+        ++runningProcesses;
+        // Optional: Restart worker on exit
+        workers[i].on('exit', (code, signal) => {
+            if(process.env.RESPAWN){
+                console.log('respawning worker', i);
+                spawn(i);
+            } else {
+                console.log('not respawning worker', i);
+                --runningProcesses;
+                if(!runningProcesses){
+                    console.log('All processes exited. Exiting master process');
+                    process.exit(-1);
+                }
+            }
+        });
+    };
+
+    // Spawn workers.
+    for (let i = 0; i < numProcesses; i++) {
+        spawn(i);
+    }
+
+    // Helper function for getting a worker index based on IP address.
+    // This is a hot path so it should be really fast. The way it works
+    // is by converting the IP address to a number by removing non numeric
+    // characters, then compressing it to the number of slots we have.
+    //
+    // Compared against "real" hashing (from the sticky-session code) and
+    // "real" IP number conversion, this function is on par in terms of
+    // worker index distribution only much faster.
+    const workerIndex = (ip, len) => {
+        return farmhash.fingerprint32(ip) % len; // Farmhash is the fastest and works with IPv6, too
+    };
+
+    // Create the outside facing server listening on our port.
+    //const sslKey = fs.readFileSync('/etc/nginx/ssl/lal10.key').toString();
+    //const sslCert = fs.readFileSync('/etc/nginx/ssl/lal10.crt').toString();
+    const server = net.createServer({pauseOnConnect: true}
+, (connection) => {
+        // We received a connection and need to pass it to the appropriate
+        // worker. Get the worker for this connection's source IP and pass
+        // it the connection.
+        const ix = workerIndex(connection.remoteAddress, numProcesses);
+        let worker = workers[ix];
+        worker.send(`sticky-session:connection_${ix}`, connection);
+    }).listen(port);
+} else {
+    /**
+     * Event listener for HTTP server "error" event.
+     */
+    const onError = error => {
+        if (error.syscall !== 'listen') {
+            throw error;
+        }
+
+        let bind = typeof port === 'string'
+            ? 'Pipe ' + port
+            : 'Port ' + port;
+
+        // handle specific listen errors with friendly messages
+        switch (error.code) {
+            case 'EACCES':
+                console.error(bind + ' requires elevated privileges');
+                process.exit(1);
+                break;
+            case 'EADDRINUSE':
+                console.error(bind + ' is already in use');
+                process.exit(1);
+                break;
+            default:
+                throw error;
+        }
+    };
+
+    /**
+     * Event listener for HTTP server "listening" event.
+     */
+    const  onListening = () => {
+        // TODO: exit program if error in creating redis client
+        // adding redis client to app
+        promisifyRedisClient(REDIS_CLIENT, redis.createClient());
+        REDIS_CLIENT.select(REDIS_DB).then( () => {
+            console.log(`redis client connected in worker and selected db ${REDIS_DB}`);
+        });
+    };
+
+    const server = app.listen(0, 'localhost');
+    server.on('error', onError);
+    server.on('listening', onListening);
+
+    const io = sio(server);
+    IO_CONN.io = io;
+    // Tell Socket.IO to use the redis adapter. By default, the redis
+    // server is assumed to be on localhost:6379. You don't have to
+    // specify them explicitly unless you want to change them.
+    io.adapter(sio_redis());
+    io.on('connection', async socket => {
+      console.log('----------------------------------------socket connected----------------------------');
+      await onWsConnectionHandler(io, socket);
+    });
+
+
+    // Listen to messages sent from the master. Ignore everything else.
+    process.on('message', function(message, connection) {
+        let [msg, workerIx] = message.split('_');
+        if (msg !== 'sticky-session:connection') {
+            console.log('process received some other message')
+            console.log(message)
+            return;
+        }
+
+        // Emulate a connection event on the server by emitting the
+        // event with the connection the master sent us.
+        console.log('got a connection for worker ' + workerIx)
+
+        server.emit('connection', connection);
+        connection.resume();
+    });
+}
+
+
+
+

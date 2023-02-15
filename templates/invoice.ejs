@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		img{margin-top: 5px; width:200px;}
+		p{font-style: normal;}
+		.headerview {
+			background-color: #f2f2f2;
+			text-align: left
+			}
+		body{font-size: 12px;}
+	</style>
+<body>
+
+<div>
+	<table style="border:0px">
+		<td style="text-align: left">
+			<b>ORIGINAL FOR RECIPIENT</b>
+		<p>
+			Corporate office:<br>
+			Bhagwandas Retail Pvt.Ltd.<br>
+			C 15, C Block, Sector 65<br>
+			Noida, UP - 201301<br>
+			Noida, Uttar Pradesh 201301<br>
+			GSTIN: 09AAGCB0517N1ZK<br>
+			CIN: 07857139927<br>
+		</p>
+		</td>
+		<td>
+			<img src="https://res.cloudinary.com/techugonew/image/upload/v1596048332/2BtseqfXTubd1B-yzvuvp4K_.png"/>
+		</td>
+</table>
+
+
+<table>
+	<tr>
+		<th>INVOICE TO</th>
+		<th>SHIP TO</th>
+		<th>Tax Invoice  </th>
+	</tr>
+<tr>
+	<td>
+		<%= invoice.invoiceTo %><br>
+		PLACE OF SUPPLY<br>
+		<%= invoice.placeOfSupply %>
+	</td>
+
+	<td>
+		<%= invoice.shipTo %>
+	</td>
+	<td>
+		DATE <%= invoice.dueDate %><br>
+		DUE DATE <%= invoice.dueDate %>
+	</td>
+</tr>
+</table>
+<hr>
+
+<br>
+<br>
+<table width="100%">
+	<tr><th>CURRENCY</th><th>TOTAL OF QTY </th></tr>
+	<tr><td>INR</td><td><%= invoice.qty %></td></tr>
+</table>
+
+<table width="100%">
+	<tr class="headerview" >
+		<th>NO</th><th>HSN/SAC</th><th>DATE</th><th>ACTIVITY</th><th>UNIT</th><th>QTY</th><th>RATE</th><th>TAX</th>
+		<th>AMOUNT</th>
+	</tr>
+<tr>
+	<td>1</td>
+	<td>- </td>
+	<td> <%= invoice.dueDate %> </td>
+	<td><%= invoice.productName %> </td>
+	<td><%= invoice.unit %> </td>
+	<td><%= invoice.qty %> </td>
+	<td><%= invoice.rate %> </td>
+	<td><%= invoice.tax %> </td>
+	<td><%= invoice.amount %> </td>
+</tr>
+
+</table>
+
+<hr style="border-top: 1px solid #f2f2f2;">
+<table>
+	<tr>
+		<td>
+			It was a pleasure serving you! Hope you will <br> recommend us to
+			your family and friends <br> and give us a chance to serve you
+			again.<br>
+		</td>
+	<td style="width:20px;">
+	</td>
+		<td>
+				<table width="100%" style="margin-right:20px">
+					<tr><td>SUBTOTAL</td>  <td><%= invoice.subTotal %> </td></tr>
+					<tr><td>TAX </td>  <td> <%= invoice.tax %> </td></tr>
+					<tr><td>TOTAL </td>  <td> INR <%= invoice.TOTAL %> </td></tr>
+				</table>
+		</td>
+	</tr>
+<tr>
+	<td>
+	Bhagwandas Retail Pvt Ltd<br>
+	HDFC Bank,Ground Floor,Tower B<br>
+	Galaxy IT Park,Sector 62,Noida<br>
+	Acc no-50200005294104<br>
+	Ifsc code-HDFC0004392<br>
+</td>
+<td>
+	TOTAL DUE     INR 5,600.00<br>
+					Noida|Bhubaneswar<br>
+				1200+ Artisans In 8 States<br>
+				For Bhagwandas Retail Pvt.Ltd.<br>
+</td>
+</tr>
+</table>
+
+<br>
+
+Authorised signature<br>
+
+</table>
+<br>
+	</div>
+</div>
+</body>
+</html>
+

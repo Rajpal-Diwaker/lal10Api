@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		img{margin-top: 5px; width:200px;}
+		p{font-style: normal;}
+		.headerview {
+			background-color: #f2f2f2;
+			text-align: left
+			}
+		body{font-size: 12px;}
+	</style>
+<body>
+
+<div>
+	<table style="border:0px">
+		<td style="text-align: left">
+			<b>(Lal10) Bhagwandas Retail Pvt. Ltd.</b>
+		<p>
+			Corporate office:<br>
+			Bhagwandas Retail Pvt.Ltd.<br>
+			C 15, C Block, Sector 65<br>
+			Noida, UP - 201301<br>
+			Noida, Uttar Pradesh 201301<br>
+			IN<br>
+			9167106930<br>
+			maneet@lal10.com,sanchit@lal10.com<br>
+			GSTIN: 09AAGCB0517N1ZK<br>
+			PAN No. AAGCB0517N<br>
+			CIN: 07857139927<br>
+		</p>
+		</td>
+</table>
+
+<h1>Purchase Order</h1>
+<table>
+	<tr>
+		<th>SUPPLIER</th>
+		<th>SHIP TO</th>
+		<th>P.O. NO  -LAL10001 </th>
+	</tr>
+<tr>
+	<td>
+		<%= order.supplier %>
+		<br>
+	</td>
+
+	<td>
+		<%= order.shipTo %>
+	</td>
+
+	<td>
+		DATE <%= order.dueDate %>
+	</td>
+</tr>
+</table>
+<hr>
+
+<br>
+<br>
+
+DISCOUNT     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= order.discount %>
+ADVANCE PAID
+
+<table width="100%">
+	<tr class="headerview">
+		<th>ACTIVITY</th><th>QTY</th><th>RATE</th><th>TAX</th><th>AMOUNT</th>
+	</tr>
+<tr>
+	<td> <%= order.productName %> </td>
+	<td><%= order.qty %>	</td>
+	<td><%= order.price %>	</td>
+	<td><%= order.gst %>	</td>
+	<td><%= order.amount %>	</td>
+</tr>
+
+</table>
+
+<hr style="border-top: 1px solid #f2f2f2;">
+
+12 days from the date of transferring the advance<br>
+50% advance ans remaining 30days PDC
+
+<table width="100%" style="margin-right:20px">
+	<tr><td>SUBTOTAL</td>  <td><%= order.subTotal %></td></tr>
+	<tr><td>TAX </td>  <td> <%= order.gst %></td></tr>
+	<tr><td>TOTAL </td>  <td> INR <%= order.amount %></td></tr>
+</table>
+<br>
+
+<table width="100%">
+	<th>Approved By</th>
+	<th>Date</th>
+</table>
+<br>
+Authorized Signature
+	</div>
+</div>
+</body>
+</html>
+
